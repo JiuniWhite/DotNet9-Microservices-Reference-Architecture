@@ -25,7 +25,7 @@ graph TD
     
     Catalog --> DB1
     Provider --> DB2
-	
+	```
 	
 	🛠️ Ficha Técnica de Arquitectura
 
