@@ -38,6 +38,17 @@ Endpoints Clave:
 
     Scalar Doc (Catalog): http://localhost:8000/catalog/scalar/v1
 
+
+## 📂 Estructura del Repositorio
+
+```text
+/
+├── Catalogo/           # Microservicio de productos
+├── Gateway/            # Proxy YARP y configuración de rutas
+├── Proveedores/        # Microservicio de proveedores
+├── docker-compose.yml  # Orquestación de infraestructura y servicios
+└── README.md
+
 💼 Puntos Clave para Defensa Técnica (CV)
 
     Por qué Consul: "No usamos IPs fijas en el Gateway. Si un servicio se cae y Docker lo reinicia con otra IP, Consul actualiza a YARP automáticamente en milisegundos".
