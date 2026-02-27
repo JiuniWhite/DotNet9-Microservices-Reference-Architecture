@@ -6,19 +6,19 @@
 
 Esta es una **Arquitectura de Referencia Maestra** diseñada para sistemas de alta escalabilidad. Implementa un ecosistema de microservicios desacoplados utilizando **Service Discovery dinámico**, **API Gateway inteligente** y **Persistencia Políglota**.
 
-🛠️ Ficha Técnica de Arquitectura
+## 🛠️ Ficha Técnica de Arquitectura
 
-    Edge Layer: YARP (Yet Another Reverse Proxy) con Rate Limiting y transformaciones de ruta.
+```text
+Edge Layer: YARP (Yet Another Reverse Proxy) con Rate Limiting y transformaciones de ruta.
 
-    Service Mesh & Discovery: Consul para el registro dinámico de instancias.
+Service Mesh & Discovery: Consul para el registro dinámico de instancias.
 
-    Microservices: Minimal APIs en .NET 9 bajo patrones de Clean Architecture.
+Microservices: Minimal APIs en .NET 9 bajo patrones de Clean Architecture.
 
-    Persistence Layer:
-
-        PostgreSQL 17 (Catalog Service) para datos relacionales complejos.
-
-        MongoDB (Provider Service) para documentos NoSQL
+Persistence Layer:
+   - PostgreSQL 17 (Catalog Service) para datos relacionales complejos.
+   - MongoDB (Provider Service) para documentos NoSQL
+```
 
 🚀 Cómo ejecutar el proyecto (Docker)
 
@@ -30,14 +30,14 @@ Esta es una **Arquitectura de Referencia Maestra** diseñada para sistemas de al
     Levantar los microservicios:
     docker-compose up -d catalog-api provider-api api-gateway
 
-Endpoints Clave:
+## Endpoints Clave:
 
-    API Gateway (Entrada): http://localhost:8000
+```text
 
-    Consul Dashboard: http://localhost:8500
-
-    Scalar Doc (Catalog): http://localhost:8000/catalog/scalar/v1
-
+* API Gateway (Entrada): http://localhost:8000
+* Consul Dashboard: http://localhost:8500
+* Scalar Doc (Catalog): http://localhost:8000/catalog/scalar/v1
+```
 
 ## 📂 Estructura del Repositorio
 
