@@ -6,8 +6,6 @@
 
 Esta es una **Arquitectura de Referencia Maestra** diseñada para sistemas de alta escalabilidad. Implementa un ecosistema de microservicios desacoplados utilizando **Service Discovery dinámico**, **API Gateway inteligente** y **Persistencia Políglota**.
 
-
-
 ## 🏗️ Diagrama de Arquitectura
 Este diagrama muestra cómo **YARP** interactúa con **Consul** para rutar peticiones a los servicios correctos.
 
@@ -27,8 +25,9 @@ graph TD
     
     Catalog --> DB1
     Provider --> DB2
-
-🛠️ Ficha Técnica de Arquitectura
+	
+	
+	🛠️ Ficha Técnica de Arquitectura
 
     Edge Layer: YARP (Yet Another Reverse Proxy) con Rate Limiting y transformaciones de ruta.
 
@@ -42,9 +41,9 @@ graph TD
 
         MongoDB (Provider Service) para documentos NoSQL.
 
-🚀 Cómo ejecutar el proyecto (Docker)
+	🚀 Cómo ejecutar el proyecto (Docker)
 
-Solo necesitas tener Docker instalado.
+	Solo necesitas tener Docker instalado.
 
     Levantar la infraestructura (Consul, DBs):
     Bash
@@ -56,7 +55,7 @@ Solo necesitas tener Docker instalado.
 
     docker-compose up -d catalog-api provider-api api-gateway
 
-Endpoints Clave:
+	Endpoints Clave:
 
     API Gateway (Entrada): http://localhost:8000
 
@@ -64,7 +63,7 @@ Endpoints Clave:
 
     Scalar Doc (Catalog): http://localhost:8000/catalog/scalar/v1
 
-💼 Puntos Clave para Defensa Técnica (CV)
+	💼 Puntos Clave para Defensa Técnica (CV)
 
     Por qué Consul: "No usamos IPs fijas en el Gateway. Si un servicio se cae y Docker lo reinicia con otra IP, Consul actualiza a YARP automáticamente en milisegundos".
 
