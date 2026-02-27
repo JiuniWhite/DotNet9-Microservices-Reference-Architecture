@@ -50,14 +50,16 @@ Endpoints Clave:
 └── README.md
 ```
 
-💼 Puntos Clave para Defensa Técnica (CV)
+## 💼 Puntos Clave para Defensa Técnica (CV)
+
+```text
 
     Por qué Consul: "No usamos IPs fijas en el Gateway. Si un servicio se cae y Docker lo reinicia con otra IP, Consul actualiza a YARP automáticamente en milisegundos".
 
     Por qué Persistencia Políglota: "Catalog usa Postgres porque necesita integridad referencial (ACID). Provider usa Mongo porque necesita agilidad para cambiar la estructura de los         datos sin migrar tablas".
 
     Clean Architecture: "Tengo separadas la lógica de negocio (Core) de la tecnología de base de datos (Infrastructure). Si mañana quiero cambiar Postgres por MySQL, no toco el núcleo de     la aplicación".
-
+```
 
 ## 🏗️ Diagrama de Arquitectura
 Este diagrama muestra cómo **YARP** interactúa con **Consul** para rutar peticiones a los servicios correctos.
