@@ -6,6 +6,8 @@
 
 Esta es una **Arquitectura de Referencia Maestra** diseñada para sistemas de alta escalabilidad. Implementa un ecosistema de microservicios desacoplados utilizando **Service Discovery dinámico**, **API Gateway inteligente** y **Persistencia Políglota**.
 
+
+
 ## 🏗️ Diagrama de Arquitectura
 Este diagrama muestra cómo **YARP** interactúa con **Consul** para rutar peticiones a los servicios correctos.
 
