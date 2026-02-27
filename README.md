@@ -25,9 +25,8 @@ graph TD
     
     Catalog --> DB1
     Provider --> DB2
-	```
-	
-	🛠️ Ficha Técnica de Arquitectura
+
+🛠️ Ficha Técnica de Arquitectura
 
     Edge Layer: YARP (Yet Another Reverse Proxy) con Rate Limiting y transformaciones de ruta.
 
@@ -41,9 +40,9 @@ graph TD
 
         MongoDB (Provider Service) para documentos NoSQL.
 
-	🚀 Cómo ejecutar el proyecto (Docker)
+🚀 Cómo ejecutar el proyecto (Docker)
 
-	Solo necesitas tener Docker instalado.
+Solo necesitas tener Docker instalado.
 
     Levantar la infraestructura (Consul, DBs):
     Bash
@@ -55,7 +54,7 @@ graph TD
 
     docker-compose up -d catalog-api provider-api api-gateway
 
-	Endpoints Clave:
+Endpoints Clave:
 
     API Gateway (Entrada): http://localhost:8000
 
@@ -63,10 +62,14 @@ graph TD
 
     Scalar Doc (Catalog): http://localhost:8000/catalog/scalar/v1
 
-	💼 Puntos Clave para Defensa Técnica (CV)
+💼 Puntos Clave para Defensa Técnica (CV)
 
-    Por qué Consul: "No usamos IPs fijas en el Gateway. Si un servicio se cae y Docker lo reinicia con otra IP, Consul actualiza a YARP automáticamente en milisegundos".
-
+    Por qué Consul: "No usamos IPs fijas en el Gateway. Si un servicio se cae y Docker lo reinicia con otra IP, Consul actualiza a YARP automáticamente en milisegundo
     Por qué Persistencia Políglota: "Catalog usa Postgres porque necesita integridad referencial (ACID). Provider usa Mongo porque necesita agilidad para cambiar la estructura de los datos sin migrar tablas".
 
     Clean Architecture: "Tengo separadas la lógica de negocio (Core) de la tecnología de base de datos (Infrastructure). Si mañana quiero cambiar Postgres por MySQL, no toco el núcleo de la aplicación".
+
+
+### 🚀 Secuencia de Git para subirlo:
+
+```
