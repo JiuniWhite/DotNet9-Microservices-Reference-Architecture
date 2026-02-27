@@ -48,6 +48,7 @@ Endpoints Clave:
 ├── Proveedores/        # Microservicio de proveedores
 ├── docker-compose.yml  # Orquestación de infraestructura y servicios
 └── README.md
+```
 
 💼 Puntos Clave para Defensa Técnica (CV)
 
