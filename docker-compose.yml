@@ -1,0 +1,133 @@
+﻿version: "3.8"
+
+name: ServiceMarket
+
+services:
+
+  consul:
+    image: hashicorp/consul:latest
+    container_name: consul-server
+    restart: always
+    ports:
+      - "8500:8500"
+    command: "agent -dev -client=0.0.0.0"
+
+  db-catalog:
+    image: postgres:17-alpine
+    container_name: db-catalog
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: catalog_db
+    ports:
+      - "5443:5432"
+    volumes:
+      - catalog_data:/var/lib/postgresql/data
+
+  provider-mongo:
+    image: mongo:latest
+    container_name: provider-mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: mongoPassword123
+    ports:
+      - "27037:27017"
+    volumes:
+      - mongo_data:/data/db
+    restart: unless-stopped
+
+  provider-api:
+    build:
+      context: .
+      dockerfile: Proveedores/Provider.Api/Dockerfile
+    container_name: provider-api
+    hostname: provider-api
+    ports:
+      - "5039:5039"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - CatalogDatabaseSettings__ConnectionString=mongodb://admin:mongoPassword123@provider-mongo:27017/
+      - CatalogDatabaseSettings__DatabaseName=ProviderDb
+      - ASPNETCORE_URLS=http://+:5039
+    depends_on:
+      - provider-mongo
+      - consul
+
+  catalog-api:
+    build:
+      context: .
+      dockerfile: Catalogo/Catalog.Api/Dockerfile
+    container_name: catalog-api
+    hostname: catalog-api
+    ports:
+      - "5071:5071"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:5071
+      - ConnectionStrings__DefaultConnection=Host=db-catalog;Port=5432;Database=catalog_db;Username=postgres;Password=postgres;
+    depends_on:
+      - db-catalog
+      - consul
+
+  api-gateway:
+    build:
+      context: .
+      dockerfile: Gateway/Service.Gateway/Dockerfile
+    container_name: api-gateway
+    restart: always
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080
+      - CONSUL_URL=http://consul-server:8500
+      - DOTNET_RUNNING_IN_CONTAINER=true
+
+      # --- PROVIDER ---
+      - ReverseProxy__Routes__provider-api__ClusterId=provider-cluster
+      - ReverseProxy__Routes__provider-api__Match__Path=/providers/api/{**catch-all}
+      - ReverseProxy__Routes__provider-api__Transforms__0__PathRemovePrefix=/providers
+
+      - ReverseProxy__Routes__provider-json__ClusterId=provider-cluster
+      - ReverseProxy__Routes__provider-json__Match__Path=/providers/openapi/{**catch-all}
+      - ReverseProxy__Routes__provider-json__Transforms__0__PathRemovePrefix=/providers
+
+      - ReverseProxy__Routes__provider-docs__ClusterId=provider-cluster
+      - ReverseProxy__Routes__provider-docs__Match__Path=/providers/scalar/{**catch-all}
+      - ReverseProxy__Routes__provider-docs__Transforms__0__PathRemovePrefix=/providers
+
+      - ReverseProxy__Routes__provider-health__ClusterId=provider-cluster
+      - ReverseProxy__Routes__provider-health__Match__Path=/providers/health
+      - ReverseProxy__Routes__provider-health__Transforms__0__PathRemovePrefix=/providers
+
+      - ReverseProxy__Clusters__provider-cluster__Destinations__dest1__Address=http://provider-api:5039/
+      - ReverseProxy__Clusters__provider-cluster__HttpRequest__ActivityTimeout=00:00:30
+
+      # --- CATALOG ---
+      - ReverseProxy__Routes__catalog-api__ClusterId=catalog-cluster
+      - ReverseProxy__Routes__catalog-api__Match__Path=/catalog/api/{**catch-all}
+      - ReverseProxy__Routes__catalog-api__Transforms__0__PathRemovePrefix=/catalog
+
+      - ReverseProxy__Routes__catalog-json__ClusterId=catalog-cluster
+      - ReverseProxy__Routes__catalog-json__Match__Path=/catalog/openapi/{**catch-all}
+      - ReverseProxy__Routes__catalog-json__Transforms__0__PathRemovePrefix=/catalog
+
+      - ReverseProxy__Routes__catalog-docs__ClusterId=catalog-cluster
+      - ReverseProxy__Routes__catalog-docs__Match__Path=/catalog/scalar/{**catch-all}
+      - ReverseProxy__Routes__catalog-docs__Transforms__0__PathRemovePrefix=/catalog
+
+      - ReverseProxy__Routes__catalog-health__ClusterId=catalog-cluster
+      - ReverseProxy__Routes__catalog-health__Match__Path=/catalog/health
+      - ReverseProxy__Routes__catalog-health__Transforms__0__PathRemovePrefix=/catalog
+
+      - ReverseProxy__Clusters__catalog-cluster__Destinations__dest1__Address=http://catalog-api:5071/
+      - ReverseProxy__Clusters__catalog-cluster__HttpRequest__ActivityTimeout=00:00:30
+
+    ports:
+      - "8000:8080"
+    depends_on:
+      - provider-api
+      - catalog-api
+      - consul
+
+volumes:
+  catalog_data:
+  mongo_data:

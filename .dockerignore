@@ -1,0 +1,56 @@
+## --- Visual Studio & .NET ---
+**/.vs
+**/.vscode
+**/bin
+**/obj
+**/*.user
+**/*.*proj.user
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+## --- Docker & Containers (CORREGIDO) ---
+# Permitimos Dockerfiles y docker-compose para que el repo sea funcional
+!**/docker-compose*
+!**/Dockerfile*
+**/.dockerignore
+
+## --- Environment & Secrets ---
+**/.env
+**/.env.*
+**/secrets.dev.yaml
+**/values.dev.yaml
+**/appsettings.Development.json
+# Nota: Puedes decidir subir appsettings.Development.json si no tiene claves reales
+# para facilitar que otros corran tu proyecto.
+
+## --- Databases & OS ---
+**/*.dbmdl
+**/*.jfm
+.DS_Store
+Thumbs.db
+
+## --- Node / Frontend (Por si agregas Angular/React luego) ---
+**/node_modules
+**/npm-debug.log
+
+## --- Otros archivos de sistema ---
+**/.classpath
+**/.project
+**/.settings
+**/.toolstarget
+**/azds.yaml
+**/charts
+
+## --- Git Infrastructure ---
+**/.git
+!**/.gitignore
+!.git/HEAD
+!.git/config
+!.git/packed-refs
+!.git/refs/heads/**
+
+## --- Documentación ---
+!LICENSE
+!README.md
